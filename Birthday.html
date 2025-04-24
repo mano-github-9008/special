@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Birthday Card</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Nobile:400italic,700italic|Dancing+Script');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #f6f2f2 url("bday.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Nobile', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    #card {
+      width: 100%;
+      max-width: 700px;
+      height: 500px;
+      perspective: 1500px;
+      position: relative;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 1s;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    #card.open .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-front {
+      background: linear-gradient(to bottom, #9f55ff, #c477ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+    }
+
+    .card-front h1 {
+      font-size: 2.5rem;
+      text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-back {
+      background: #fcfcfc;
+      color: #8200be;
+      font-style: italic;
+      padding: 2rem;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .signed {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      margin-top: 1.5em;
+    }
+
+    #page-nav {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    #page-nav button,
+    #controls button {
+      background: #8200be;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+
+    #page-nav button:hover,
+    #controls button:hover {
+      background: #b94dfc;
+    }
+
+    img {
+      max-width: 60%;
+      height: auto;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 500px) {
+      .card-front h1 {
+        font-size: 1.8rem;
+        text-align: center;
+      }
+
+      .signed {
+        font-size: 1.2rem;
+      }
+    }
+
+    .page {
+  display: none;
+  text-align: center;
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes flipIn {
+  from {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.page img {
+  max-width: 60%;
+  height: auto;
+  margin-top: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Video Section */
+.video-section {
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  background: var(--side-nav); /* Use a background color or gradient */
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  color: var(--text-color);
+  margin-bottom: 20px;
+}
+
+.video-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 80%; /* Adjust as needed */
+  max-height: 500px; /* Prevent video from being too tall */
+  margin: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--body-color);
+}
+
+.intro-video {
+  width: 100%; /* Full width of the container */
+  max-width: 800px; /* Set maximum width for the video */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .video-title {
+      font-size: 22px;
+  }
+  .intro-video {
+      max-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-title {
+      font-size: 18px;
+  }
+  .intro-video {
+      max-width: 90%;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <div id="card">
+    <div class="card-inner">
+      <div class="card-face card-front">
+        <h1>Happy Birthday Mi-Queen</h1>
+        <div class="video-section">
+          <!-- <h3 class="video-title">Happy Birthday Mi-Queen 👸</h3> -->
+          
+      </div>
+        <div id="controls">
+          <button id="open">Open</button>
+        </div>
+      </div>
+      <div class="card-face card-back">
+        <div>
+          <div class="page active">
+            <<div class="video-container">
+              <video controls autoplay muted loop class="intro-video">
+                  <source src="spclvid (2).mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+          </div>
+          </div>
+          <div class="page">
+            <p>I am thankful for every moment we spend together, and I wish our happiness never ends.</p>
+          </div>
+          <div class="page">
+            <p>I will be there with you forever.</p>
+            <p class="signed">— VINAY</p>
+            <div style="text-align:center;">
+              <img src="bday.jpg" alt="Birthday Image" />
+            </div>
+          </div>
+          <div class="page">
+            <p>I am thankful for every moment we spend together, and I wish our happiness never ends.</p>
+          </div>
+          <div class="page">
+            <p>I am </p>
+          </div>
+        </div>
+        <div id="page-nav">
+          <button onclick="prevPage()"><</button>
+          <button onclick="nextPage()">></button>
+          <button id="close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <audio autoplay >
+    <source src="Inkem inkem kavale Bgm ringtone__3wchannel(M4A_128K).m4a" type="audio/mpeg">
+  </audio> -->
+
+  <audio id="audio0">
+    <source src="Inkem inkem kavale Bgm ringtone__3wchannel(M4A_128K).m4a" type="audio/mpeg">
+  </audio>
+  <audio id="audio1">
+    <source src="Kannathil Muthamittal - Humming Sujatha A R Rahman Madhavan Simran Manirathnam(M4A_128K).m4a" type="audio/mpeg">
+  </audio>
+  <audio id="audio2">
+    <source src="Kaatre En Vaasal Vandhaai BGM - AR Rahman _ Arun _ meena _ Jyothika _ Rhythm BGM _ Whatsapp Status(M4A_128K).m4a" type="audio/mpeg">
+  </audio>
+  <audio id="audio3">
+    <source src="GG_humming 1.m4a" type="audio/mpeg">
+  </audio>
+  <audio id="audio4">
+    <source src="GG_humming 3.m4a" type="audio/mpeg">
+  </audio>
+  
+
+  <script>
+    const card = document.getElementById('card');
+    const openBtn = document.getElementById('open');
+    const closeBtn = document.getElementById('close');
+
+    openBtn.addEventListener('click', () => {
+  card.classList.add('open');
+  currentPage = 0;
+  showPage(currentPage); // Ensure first page shows
+  const audio0 = document.getElementById('audio0');
+  if (audio0) {
+    audio0.play(); // Play audio on first page
+  }
+});
+
+
+    closeBtn.addEventListener('click', () => {
+      card.classList.remove('open');
+      currentPage = 0;
+      showPage(currentPage);
+    });
+
+    let currentPage = 0;
+    const pages = document.querySelectorAll('.page');
+
+    function showPage(index) {
+      pages.forEach((page, i) => {
+        page.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextPage() {
+      if (currentPage < pages.length - 1) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+    function showPage(index) {
+  pages.forEach((page, i) => {
+    if (i === index) {
+      page.classList.add('active');
+      page.style.animationName = 'flipIn';
+    } else {
+      page.classList.remove('active');
+      page.style.animationName = '';
+    }
+  });
+}
+
+function showPage(index) {
+  pages.forEach((page, i) => {
+    if (i === index) {
+      page.classList.add('active');
+      page.style.animationName = 'flipIn';
+    } else {
+      page.classList.remove('active');
+      page.style.animationName = '';
+    }
+  });
+
+  // Stop all audio first
+  for (let i = 0; i < pages.length; i++) {
+    const audio = document.getElementById(`audio${i}`);
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }
+
+  // Play current page's audio
+  const currentAudio = document.getElementById(`audio${index}`);
+  if (currentAudio) {
+    currentAudio.play();
+  }
+}
+
+window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader");
+  
+    loader.classList.add("loader--hidden");
+  
+    loader.addEventListener("transitionend", () => {
+      document.body.removeChild(loader);
+    });
+  });
+
+
+  </script>
+</body>
+</html>
